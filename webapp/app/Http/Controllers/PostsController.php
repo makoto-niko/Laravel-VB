@@ -7,7 +7,7 @@ use App\Models\Post;
 use App\Models\Author;
 
 use DB;
-use log;
+use Log;
 
 class PostsController extends Controller
 {
@@ -17,9 +17,73 @@ class PostsController extends Controller
         $posts = $model->getPosts();
         return view('index', compact('posts'));
     }
-    public function show()
+
+    public function showCreate()
     {
-        $title = '詳細画面';
-        return view('show', compact('title'));
+        $authors = Author::all();
+        return view('create', compact('authors'));
+    }
+    public function storePost(Request $request)
+    {
+        $model = new Post();
+
+        try {
+            DB::beginTransaction();
+            $model->storePost($request);
+            DB::commit();
+        } catch (\Exception $e) {
+            Log::error($e);
+            DB::rollback();
+            return redirect()->route('index');
+        }
+
+        return redirect()->route('index');
+    }
+
+    public function showEdit($id)
+    {
+        $post = Post::find($id);
+        $authors = Author::all();
+
+        return view('show', compact('post', 'authors'));
+    }
+
+    public function updatePost($request, $id)
+    {
+        $posts = self::find($id);
+        $posts->title = $request->input('title');
+        $posts->author_id = $request->input('author_id');
+        $posts->content = $request->input('content');
+        $posts->save();
+    }
+
+    public function registEdit(Request $request, $id)
+    {
+        $model = new Post();
+        try {
+            DB::beginTransaction();
+            $model->updatePost($request, $id);
+            DB::commit();
+        } catch (\Exception $e) {
+            Log::error($e);
+            DB::rollback();
+            return redirect()->route('index');
+        }
+        return redirect()->route('index');
+    }
+
+    public function deletePost($id)
+    {
+        $model = new Post();
+        try {
+            DB::beginTransaction();
+            $model->deletePost($id);
+            DB::commit();
+        } catch (\Exception $e) {
+            Log::error($e);
+            DB::rollback();
+            return redirect()->route('index');
+        }
+        return redirect()->route('index');
     }
 }

@@ -19,4 +19,27 @@ class Post extends Model
 
         return $posts;
     }
+
+    public function storePost($request)
+    {
+        self::create([
+            'title' => $request->input('title'),
+            'author_id' => $request->input('author_id'),
+            'content' => $request->input('content')
+        ]);
+    }
+
+    public function updatePost($request, $id)
+    {
+        $posts = self::find($id);
+        $posts->title = $request->input('title');
+        $posts->author_id = $request->input('author_id');
+        $posts->content = $request->input('content');
+        $posts->save();
+    }
+    public function deletePost($id)
+    {
+        $post = self::find($id);
+        $post->delete();
+    }
 }

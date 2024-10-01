@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use App\Models\Author;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        Author::create(['author_name' => '山田太郎']);
+        Author::create(['author_name' => '佐藤花子']);
+        $this->call(AuthorsTableSeeder::class);
     }
 }
