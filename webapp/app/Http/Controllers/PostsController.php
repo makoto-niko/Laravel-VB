@@ -15,18 +15,11 @@ class PostsController extends Controller
     {
         $model = new Post();
         $posts = $model->getPosts();
-        $authors = Author::all();
-        return view('index', [
-            'posts' => $posts,
-            'authors' => $authors
-        ]);
+        return view('index', compact('posts'));
     }
-
-    public function showCreate()
+    public function show()
     {
-        $authors = Author::all();
-        return view('create', [
-            'authors' => $authors
-        ]);
+        $title = '詳細画面';
+        return view('show', compact('title'));
     }
 }
