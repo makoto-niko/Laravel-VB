@@ -3,16 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Models\Author;
+
+use DB;
+use log;
 
 class PostsController extends Controller
 {
     public function index()
     {
-        return view('index');
+        $model = new Post();
+        $posts = $model->getPosts();
+        $authors = Author::all();
+        return view('index', [
+            'posts' => $posts,
+            'authors' => $authors
+        ]);
     }
-    public function show()
+
+    public function showCreate()
     {
-        $titel = '詳細画面';
-        return view('show', ['title' => $titel]);
+        $authors = Author::all();
+        return view('create', [
+            'authors' => $authors
+        ]);
     }
 }
