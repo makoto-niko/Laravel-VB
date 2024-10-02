@@ -20,5 +20,14 @@
         本文
         <textarea name="content" id="" cols="30" rows="10"></textarea>
     </div>
+    @if ($errors->any())
+    <div>
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <input type="submit">
 </form>

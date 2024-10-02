@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use App\Models\Author;
 
@@ -23,9 +24,10 @@ class PostsController extends Controller
         $authors = Author::all();
         return view('create', compact('authors'));
     }
-    public function storePost(Request $request)
+    public function storePost(PostRequest $request)
     {
         $model = new Post();
+        $validatedData = $request->validated();
 
         try {
             DB::beginTransaction();
@@ -57,9 +59,10 @@ class PostsController extends Controller
         $posts->save();
     }
 
-    public function registEdit(Request $request, $id)
+    public function registEdit(PostRequest $request, $id)
     {
         $model = new Post();
+        $validatedData = $request->validated();
         try {
             DB::beginTransaction();
             $model->updatePost($request, $id);
