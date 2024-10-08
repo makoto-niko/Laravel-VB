@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +21,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -30,12 +32,18 @@ Route::middleware('auth')->group(function () {
 
 //Route::get('/index', [App\Http\Controllers\PostsController::class, 'index']);
 //Route::get('/show', [App\Http\Controllers\PostsController::class, 'show']);
-Route::get('/index', [App\Http\Controllers\PostsController::class, 'index'])->name('index');
-Route::get('/create', [App\Http\Controllers\PostsController::class, 'showCreate'])->name('show.create');
-Route::post('/create', [App\Http\Controllers\PostsController::class, 'storePost'])->name('store.post');
-Route::get('/edit/{id}', [App\Http\Controllers\PostsController::class, 'showEdit'])->name('show.edit');
-Route::post('/edit/{id}', [App\Http\Controllers\PostsController::class, 'registEdit'])->name('regist.edit');
-Route::delete('/delete/{id}', [App\Http\Controllers\PostsController::class, 'deletePost'])->name('delete');
+Route::middleware('auth')->group(function () {
+    Route::get('/index', [PostsController::class, 'index'])->name('index');
+    Route::get('/create', [PostsController::class, 'Create'])->name('show.create');
+    Route::post('/create', [PostsController::class, 'Post'])->name('store.post');
+    Route::get('/edit/{id}', [PostsController::class, 'Edit'])->name('show.edit');
+    Route::post('/edit/{id}', [PostsController::class, 'registEdit'])->name('regist.edit');
+    Route::delete('/delete/{id}', [PostsController::class, 'deletePost'])->name('delete');
+});
 
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('/logout', 'TestController@logout')->name('logout');
+});
 
 require __DIR__ . '/auth.php';

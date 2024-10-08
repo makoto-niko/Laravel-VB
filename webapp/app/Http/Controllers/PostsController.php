@@ -19,15 +19,14 @@ class PostsController extends Controller
         return view('index', compact('posts'));
     }
 
-    public function showCreate()
+    public function Create()
     {
         $authors = Author::all();
         return view('create', compact('authors'));
     }
-    public function storePost(PostRequest $request)
+    public function store(PostRequest $request)
     {
         $model = new Post();
-        $validatedData = $request->validated();
 
         try {
             DB::beginTransaction();
@@ -42,7 +41,7 @@ class PostsController extends Controller
         return redirect()->route('index');
     }
 
-    public function showEdit($id)
+    public function Edit($id)
     {
         $post = Post::find($id);
         $authors = Author::all();
@@ -50,9 +49,9 @@ class PostsController extends Controller
         return view('show', compact('post', 'authors'));
     }
 
-    public function updatePost($request, $id)
+    public function update($request, $id)
     {
-        $posts = self::find($id);
+        $posts = Post::findOrFail($id);
         $posts->title = $request->input('title');
         $posts->author_id = $request->input('author_id');
         $posts->content = $request->input('content');
@@ -62,7 +61,6 @@ class PostsController extends Controller
     public function registEdit(PostRequest $request, $id)
     {
         $model = new Post();
-        $validatedData = $request->validated();
         try {
             DB::beginTransaction();
             $model->updatePost($request, $id);
@@ -75,7 +73,7 @@ class PostsController extends Controller
         return redirect()->route('index');
     }
 
-    public function deletePost($id)
+    public function delete($id)
     {
         $model = new Post();
         try {
