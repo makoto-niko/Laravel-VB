@@ -24,7 +24,7 @@ class PostsController extends Controller
         $authors = Author::all();
         return view('create', compact('authors'));
     }
-    public function store(PostRequest $request)
+    public function Post(PostRequest $request)
     {
         $model = new Post();
 
@@ -45,6 +45,7 @@ class PostsController extends Controller
     {
         $post = Post::find($id);
         $authors = Author::all();
+        Log::info($post);
 
         return view('show', compact('post', 'authors'));
     }
