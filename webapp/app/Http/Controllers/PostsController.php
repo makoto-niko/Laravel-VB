@@ -24,7 +24,7 @@ class PostsController extends Controller
         $authors = Author::all();
         return view('create', compact('authors'));
     }
-    public function Post(PostRequest $request)
+    public function store(PostRequest $request)
     {
         $model = new Post();
 
